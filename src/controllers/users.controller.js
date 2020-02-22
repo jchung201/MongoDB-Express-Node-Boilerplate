@@ -2,11 +2,11 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import httpErrors from "http-errors";
 const router = express.Router();
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 const USER = mongoose.model("USER");
 
-// POST new user route (optional, everyone has access)
 router.post(
   "/signup",
   asyncHandler(async (req, res, next) => {
@@ -19,11 +19,15 @@ router.post(
     });
     newUser.encryptPassword(password);
     const savedUser = await newUser.save();
-    res.send({ user: savedUser });
+    res.send({
+      token: jwt.sign({ _id: savedUser._id }, process.env.SECRET, {
+        expiresIn: "12h"
+      }),
+      user: savedUser
+    });
   })
 );
 
-// POST login route (optional, everyone has access)
 router.post(
   "/login",
   asyncHandler(async (req, res, next) => {
