@@ -1,37 +1,28 @@
-import crypto from "crypto";
-import jsonwebtoken from "jsonwebtoken";
+import httpErrors from "http-errors";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import USER from "./user.schema";
 
 module.exports = function(userSchema) {
-  userSchema.methods.setPassword = function(password) {
-    this.auth.salt = crypto.randomBytes(16).toString("hex");
-    this.auth.hash = crypto
-      .pbkdf2Sync(password, this.auth.salt, 10000, 512, "sha512")
-      .toString("hex");
+  userSchema.methods.encryptPassword = function(password, next) {
+    const user = this;
+    bcrypt.genSalt(10, function(error, salt) {
+      if (error) throw httpErrors(500, "Error encrypting password");
+      bcrypt.hash(password, salt, function(error, hash) {
+        if (error) throw httpErrors(500, "Error encrypting password");
+        user.auth.password = hash;
+        user.save();
+      });
+    });
   };
-  userSchema.methods.validatePassword = function(password) {
-    const hash = crypto
-      .pbkdf2Sync(password, this.auth.salt, 10000, 512, "sha512")
-      .toString("hex");
-    return this.auth.hash === hash;
-  };
-  userSchema.methods.generateJWT = function() {
-    const today = new Date();
-    const expirationDate = new Date(today);
-    expirationDate.setDate(today.getDate() + 60);
-    return jsonwebtoken.sign(
-      {
-        username: this.auth.username,
-        id: this._id,
-        exp: parseInt(expirationDate.getTime() / 1000, 10)
-      },
-      process.env.secret
-    );
-  };
-  userSchema.methods.toAuthJSON = function() {
-    return {
-      _id: this._id,
-      username: this.auth.username,
-      token: this.generateJWT()
-    };
+  userSchema.methods.signIn = async function(password) {
+    const foundUser = await USER.findById(this._id);
+    const match = await bcrypt.compare(password, foundUser.auth.password);
+    if (match) {
+      const jwtScheme = { _id: this._id };
+      return jwt.sign(jwtScheme, process.env.SECRET, { expiresIn: "12h" });
+    } else {
+      throw httpErrors(400, "Incorrect password!");
+    }
   };
 };

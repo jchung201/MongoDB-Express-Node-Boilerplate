@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import expressSession from "express-session";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 
@@ -25,14 +24,6 @@ class App {
     this.app.options("*", cors());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
-    this.app.use(
-      expressSession({
-        secret: process.env.secret,
-        cookie: { maxAge: 60000 },
-        resave: false,
-        saveUninitialized: false
-      })
-    );
     this.app.use(morgan(process.env.LOGGER));
   }
   database() {

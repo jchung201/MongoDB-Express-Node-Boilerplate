@@ -8,12 +8,12 @@ passport.use(
   new LocalStrategy(
     {
       passwordField: "password",
-      usernameField: "username"
+      emailField: "email"
     },
-    async (username, password, done) => {
+    async (email, password, done) => {
       try {
         const foundUser = await USER.findOne({
-          "auth.username": username.toLowerCase()
+          "auth.email": email.toLowerCase()
         });
         if (!foundUser || !foundUser.validatePassword(password)) {
           return done(null, false, {
