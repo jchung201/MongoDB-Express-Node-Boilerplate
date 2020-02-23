@@ -18,7 +18,7 @@ router.get(
   })
 );
 
-// Find user profiles
+// Find user profile
 router.get(
   "/:id",
   auth,
