@@ -1,9 +1,6 @@
 // Express instance
 import app from "./library/app";
 
-// Passport authetication
-require("./library/passport");
-
 // Router and hooked up controllers
 import router from "./library/router";
 app.use("/", router);
