@@ -7,17 +7,6 @@ import auth from "../middlewares/auth";
 
 const USER = mongoose.model("USER");
 
-// Get personal user profile
-router.get(
-  "/me",
-  auth,
-  asyncHandler(async (req, res, next) => {
-    res.send({
-      user: req.user
-    });
-  })
-);
-
 // Find user profile
 router.get(
   "/:id",
