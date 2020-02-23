@@ -9,7 +9,7 @@ const MATCH = mongoose.model("MATCH");
 
 // Create or Update Match
 router.post(
-  "/signup",
+  "/",
   asyncHandler(async (req, res, next) => {
     const { user, status } = req.body;
     if (!user || !status) {
@@ -21,14 +21,16 @@ router.post(
     if (existingMatch && existingMatch.status !== "passed") {
       const updatedMatch = await MATCH.findByIdAndUpdate({ status });
       res.send({
+        matched: status === "matched" ? true : false,
         match: updatedMatch
       });
     } else if (existingMatch) {
       throw httpErrors(401, "Cannot update match!");
     } else {
+      let newStatus = status === "passed" ? "passed" : "half";
       const newMatch = new MATCH({
         users: [user, req.user._id],
-        status
+        status: newStatus
       });
       const savedMatch = await newMatch.save();
       res.send({
