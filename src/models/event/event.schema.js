@@ -12,7 +12,8 @@ const eventSchema = new Schema(
       end: Date
     },
     location: String,
-    title: String
+    title: String,
+    picture: String
   },
   { timestamps: true }
 );

@@ -6,7 +6,12 @@ const {
 const matchSchema = new Schema(
   {
     users: [{ type: ObjectId, ref: "USER" }],
-    status: String
+    status: {
+      type: String,
+      enum: ["half", "matched", "passed"],
+      default: "half"
+    },
+    conversation: [{ user: { type: ObjectId, ref: "USER" }, message: String }]
   },
   { timestamps: true }
 );
