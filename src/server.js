@@ -5,6 +5,12 @@ import app from "./library/app";
 import router from "./library/router";
 app.use("/", router);
 
+// Catch 404
+import httpErrors from "http-errors";
+app.use((req, res, next) => {
+  next(httpErrors(404, "Not found!"));
+});
+
 // Error handler
 import errorHandler from "./middlewares/errorHandler";
 app.use(errorHandler);
