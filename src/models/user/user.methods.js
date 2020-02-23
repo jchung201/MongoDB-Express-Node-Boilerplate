@@ -19,7 +19,7 @@ module.exports = function(userSchema) {
     const foundUser = await USER.findById(this._id);
     const match = await bcrypt.compare(password, foundUser.auth.password);
     if (match) {
-      const jwtScheme = { _id: this._id };
+      const jwtScheme = { _id: this._id, email: this.auth.email };
       return jwt.sign(jwtScheme, process.env.SECRET, { expiresIn: "12h" });
     } else {
       throw httpErrors(400, "Incorrect password!");

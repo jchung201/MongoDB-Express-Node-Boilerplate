@@ -1,5 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import httpErrors from "http-errors";
+import passport from "passport";
 
 const auth = expressAsyncHandler(async (req, res, next) => {
   const {
@@ -9,7 +10,7 @@ const auth = expressAsyncHandler(async (req, res, next) => {
     await passport.authenticate(
       "jwt",
       { session: false },
-      async (error, user, info) => {
+      (error, user, info) => {
         if (error) {
           return next(error);
         }

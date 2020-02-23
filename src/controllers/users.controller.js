@@ -4,6 +4,7 @@ import httpErrors from "http-errors";
 const router = express.Router();
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import auth from "../middlewares/auth";
 
 const USER = mongoose.model("USER");
 
@@ -42,6 +43,16 @@ router.post(
     res.send({
       token: "JWT " + (await foundUser.signIn(password)),
       user: foundUser
+    });
+  })
+);
+
+router.get(
+  "/me",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    res.send({
+      user: req.user
     });
   })
 );
