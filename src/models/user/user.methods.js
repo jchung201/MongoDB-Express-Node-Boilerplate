@@ -19,10 +19,15 @@ module.exports = function(userSchema) {
     const foundUser = await USER.findById(this._id);
     const match = await bcrypt.compare(password, foundUser.auth.password);
     if (match) {
-      const jwtScheme = { _id: this._id, email: this.auth.email };
-      return jwt.sign(jwtScheme, process.env.SECRET, { expiresIn: "12h" });
+      return true;
     } else {
       throw httpErrors(400, "Incorrect password!");
     }
+  };
+  userSchema.methods.getJWT = function() {
+    const jwtScheme = { _id: this._id, email: this.auth.email };
+    return (
+      "JWT " + jwt.sign(jwtScheme, process.env.SECRET, { expiresIn: "12h" })
+    );
   };
 };

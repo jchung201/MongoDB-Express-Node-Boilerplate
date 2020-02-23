@@ -26,6 +26,7 @@ router.get(
     const users = await USER.find({ _id: { $ne: req.user._id } });
     // Return prospects that are not a match yet
     // This ensures that there are no duplicates
+    // TODO: Include filtered information based on location and stuff
     res.send({
       prospects: users.filter(user => {
         for (let i = 0; i < matches.length; i++) {

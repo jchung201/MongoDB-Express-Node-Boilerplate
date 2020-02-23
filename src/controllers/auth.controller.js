@@ -2,7 +2,6 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import httpErrors from "http-errors";
 const router = express.Router();
-import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 const USER = mongoose.model("USER");
@@ -20,9 +19,7 @@ router.post(
     newUser.encryptPassword(password);
     const savedUser = await newUser.save();
     res.send({
-      token: jwt.sign({ _id: savedUser._id }, process.env.SECRET, {
-        expiresIn: "12h"
-      }),
+      token: savedUser.getJWT(),
       user: savedUser
     });
   })
@@ -39,11 +36,15 @@ router.post(
       "auth.email": email
     });
     if (!foundUser) throw httpErrors(402, "No user found.");
+    if (!(await foundUser.signIn(password)))
+      throw httpErrors(400, "Incorrect Password");
     res.send({
-      token: "JWT " + (await foundUser.signIn(password)),
+      token: foundUser.getJWT(),
       user: foundUser
     });
   })
 );
+
+//TODO: Forgot password/Email service
 
 export default router;
