@@ -5,8 +5,14 @@ const {
 
 const eventSchema = new Schema(
   {
-    owner: { type: ObjectId, ref: "USER" },
-    name: String
+    vendor: { type: ObjectId, ref: "USER" },
+    description: String,
+    date: {
+      start: Date,
+      end: Date
+    },
+    location: String,
+    title: String
   },
   { timestamps: true }
 );
