@@ -1,13 +1,13 @@
-import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 
+// Environment variables for process.env
+import dotenv from "dotenv";
+dotenv.config();
 // Database Connection
 import database from "./database";
-
 // Passport authetication
 import passport from "./passport";
 

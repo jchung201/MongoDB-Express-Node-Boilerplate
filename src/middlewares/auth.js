@@ -15,7 +15,7 @@ const auth = expressAsyncHandler(async (req, res, next) => {
           return next(error);
         }
         if (!user) {
-          return next(httpErrors(400, "Sorry, no user found!"));
+          return next(httpErrors(400, "No user found!"));
         }
         req.user = user;
         next();
