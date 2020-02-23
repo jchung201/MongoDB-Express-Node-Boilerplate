@@ -5,16 +5,36 @@ const router = express.Router();
 import mongoose from "mongoose";
 import auth from "../middlewares/auth";
 
-const USER = mongoose.model("USER");
+const MATCH = mongoose.model("MATCH");
 
-// Get personal user profile
-router.get(
-  "/me",
-  auth,
+// Create or Update Match
+router.post(
+  "/signup",
   asyncHandler(async (req, res, next) => {
-    res.send({
-      user: req.user
+    const { user, status } = req.body;
+    if (!user || !status) {
+      throw httpErrors(402, "Forgot user or status!");
+    }
+    const existingMatch = await MATCH.findOne({
+      users: { $all: [req.user._id, user] }
     });
+    if (existingMatch && existingMatch.status !== "passed") {
+      const updatedMatch = await MATCH.findByIdAndUpdate({ status });
+      res.send({
+        match: updatedMatch
+      });
+    } else if (existingMatch) {
+      throw httpErrors(401, "Cannot update match!");
+    } else {
+      const newMatch = new MATCH({
+        users: [user, req.user._id],
+        status
+      });
+      const savedMatch = await newMatch.save();
+      res.send({
+        match: savedMatch
+      });
+    }
   })
 );
 
@@ -24,8 +44,7 @@ router.get(
   auth,
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    // Filter users
-    res.send({ user: await USER.findById(id) });
+    res.send({ match: await MATCH.findById(id) });
   })
 );
 
