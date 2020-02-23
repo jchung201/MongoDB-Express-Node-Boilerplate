@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-// Setup .env process.env.VARIABLES
 dotenv.config();
 import express from "express";
 import cors from "cors";
@@ -8,8 +7,9 @@ import bodyParser from "body-parser";
 
 // Database Connection
 import database from "./database";
-// Import Database Models
-import "../models/user/user.schema";
+
+// Passport authetication
+import passport from "./passport";
 
 class App {
   constructor() {
@@ -25,6 +25,7 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
     this.app.use(morgan(process.env.LOGGER));
+    this.app.use(passport.initialize());
   }
   database() {
     database();

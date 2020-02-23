@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+// Import Database Models
+import "../models/user/user.schema";
 
 export default () => {
   mongoose.connect(process.env.DATABASE, {
