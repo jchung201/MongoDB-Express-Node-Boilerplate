@@ -7,6 +7,24 @@ import auth from "../middlewares/auth";
 
 const RSVP = mongoose.model("RSVP");
 
+// Make event with your ID stuff
+router.post(
+  "/",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const { event, status } = req.body;
+    const newRSVP = new RSVP({
+      user: req.user._id,
+      event,
+      status
+    });
+    const savedRSVP = await newRSVP.save();
+    res.send({
+      rsvp: savedRSVP
+    });
+  })
+);
+
 // Get personal user profile
 router.get(
   "/",
