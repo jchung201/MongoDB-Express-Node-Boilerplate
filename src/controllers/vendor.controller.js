@@ -8,44 +8,14 @@ const MATCH = mongoose.model("MATCH");
 
 // Get personal user profile
 router.get(
-  "/me",
+  "/:id",
   auth,
   asyncHandler(async (req, res, next) => {
-    res.send({
-      user: req.user
-    });
-  })
-);
-// Get propspects
-router.get(
-  "/matches",
-  auth,
-  asyncHandler(async (req, res, next) => {
-    res.send({
-      matches: await MATCH.find({ users: req.user._id, status: "matched" })
-    });
-  })
-);
-// Get matches
-router.get(
-  "/matches",
-  auth,
-  asyncHandler(async (req, res, next) => {
-    // Return only matched 'MATCH's
-    res.send({
-      matches: await MATCH.find({ users: req.user._id, status: "matched" })
-    });
-  })
-);
-// Get RSVPS
-router.get(
-  "/rsvps",
-  auth,
-  asyncHandler(async (req, res, next) => {
-    // Return only going rsvps
-    res.send({
-      rsvps: await RSVP.find({ user: req.user._id, status: "going" })
-    });
+    const { id } = req.params;
+    // Filter users
+    const foundUser = await USER.findById(id);
+    if (!foundUser) throw httpErrors(401, "Vendor does not exist!");
+    res.send({ user: foundUser });
   })
 );
 

@@ -11,8 +11,6 @@ import matchController from "../controllers/match.controller";
 router.use("/api/match", matchController);
 import rsvpController from "../controllers/rsvp.controller";
 router.use("/api/rsvp", rsvpController);
-import userController from "../controllers/user.controller";
-router.use("/api/user", userController);
 import vendorController from "../controllers/vendor.controller";
 router.use("/api/vendor", vendorController);
 

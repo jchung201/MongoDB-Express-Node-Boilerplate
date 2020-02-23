@@ -61,6 +61,16 @@ router
         rsvps: await RSVP.find({ user: req.user._id, status: "going" })
       });
     })
+  )
+  .get(
+    "/:id",
+    auth,
+    asyncHandler(async (req, res, next) => {
+      const { id } = req.params;
+      const foundUser = await USER.findById(id);
+      if (!foundUser) throw httpErrors(401, "User does not exist!");
+      res.send({ user: foundUser });
+    })
   );
 
 // Edit filters
