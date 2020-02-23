@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 // Import Database Models
+import "../models/event/event.schema";
+import "../models/match/match.schema";
+import "../models/rsvp/rsvp.schema";
 import "../models/user/user.schema";
 
 export default () => {
