@@ -2,9 +2,16 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
+    type: String,
     auth: {
       password: String,
       email: String
+    },
+    vendor: {
+      name: String
+    },
+    date: {
+      name: String
     }
   },
   { timestamps: true }
