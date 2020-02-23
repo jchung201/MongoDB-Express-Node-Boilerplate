@@ -1,15 +1,15 @@
 import express from "express";
 const router = express.Router();
 
-import authController from "../controllers/auth.controller";
-router.use("/api/auth", authController);
-import eventsController from "../controllers/events.controller";
-router.use("/api/events", eventsController);
-import matchesController from "../controllers/matches.controller";
-router.use("/api/matches", matchesController);
-import rsvpsController from "../controllers/rsvps.controller";
-router.use("/api/rsvps", rsvpsController);
-import usersController from "../controllers/users.controller";
-router.use("/api/users", usersController);
+import eventController from "../controllers/event.controller";
+router.use("/api/event", eventController);
+import matchController from "../controllers/match.controller";
+router.use("/api/match", matchController);
+import rsvpController from "../controllers/rsvp.controller";
+router.use("/api/rsvp", rsvpController);
+import selfController from "../controllers/self.controller";
+router.use("/api/self", selfController);
+import userController from "../controllers/user.controller";
+router.use("/api/user", userController);
 
 export default router;
