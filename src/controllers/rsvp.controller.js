@@ -5,27 +5,26 @@ const router = express.Router();
 import mongoose from "mongoose";
 import auth from "../middlewares/auth";
 
-const USER = mongoose.model("USER");
+const RSVP = mongoose.model("RSVP");
 
 // Get personal user profile
 router.get(
-  "/me",
+  "/",
   auth,
   asyncHandler(async (req, res, next) => {
-    res.send({
-      user: req.user
-    });
+    // TODO: Filter rsvps
+    res.send({ rsvps: await RSVP.find({ user: req.user._id }) });
   })
 );
 
 // Find user profile
-router.get(
+router.patch(
   "/:id",
   auth,
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    // Filter users
-    res.send({ user: await USER.findById(id) });
+    // TODO: Edit event attendance
+    res.send();
   })
 );
 
