@@ -2,16 +2,46 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    type: String,
     auth: {
       password: String,
       email: String
     },
-    vendor: {
+    vendorProfile: {
       name: String
     },
-    date: {
-      name: String
+    datingProfile: {
+      filters: {
+        distance: Number,
+        ageLow: Number,
+        ageHigh: Number,
+        heightLow: Number,
+        heightHigh: Number
+      },
+      name: String,
+      birthDate: Date,
+      location: String,
+      description: String,
+      photos: [
+        {
+          url: String,
+          order: Number
+        }
+      ],
+      questions: {
+        step: { type: Number, default: 0 },
+        meet: [String],
+        horoscope: String,
+        schedule: [String],
+        searching: [String],
+        firstDate: [String],
+        bodyType: [String],
+        loveLanguage: [String],
+        lifeStyle: [String],
+        sexualPreference: [String],
+        relationshipStatus: String,
+        genderIdentity: String,
+        tidbit: String
+      }
     }
   },
   { timestamps: true }

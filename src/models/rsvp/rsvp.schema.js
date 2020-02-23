@@ -6,13 +6,12 @@ const {
 const rsvpSchema = new Schema(
   {
     user: { type: ObjectId, ref: "USER" },
-    event: { type: ObjectId, ref: "USER" },
+    event: { type: ObjectId, ref: "EVENT" },
     status: {
       type: String,
       enum: ["going", "passed"],
       default: "going"
-    },
-    name: String
+    }
   },
   { timestamps: true }
 );
