@@ -6,6 +6,7 @@ const {
 const eventSchema = new Schema(
   {
     vendor: { type: ObjectId, ref: "USER" },
+    category: String,
     description: String,
     date: {
       start: Date,

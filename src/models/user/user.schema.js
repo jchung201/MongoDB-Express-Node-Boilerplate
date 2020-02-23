@@ -7,7 +7,9 @@ const userSchema = new Schema(
       email: String
     },
     vendorProfile: {
-      name: String
+      name: String,
+      location: String,
+      picture: String
     },
     datingProfile: {
       filters: {
