@@ -41,7 +41,7 @@ module.exports = function(userSchema) {
     if (location) this.datingProfile.location = location;
     if (description) this.datingProfile.description = description;
     if (photos) this.datingProfile.photos = photos;
-    return await this.save();
+    return await this.save({ new: true });
   };
   userSchema.methods.updateFilter = async function(
     distance,
@@ -57,5 +57,10 @@ module.exports = function(userSchema) {
     if (heightHigh) this.datingProfile.filters.heightHigh = heightHigh;
     return await this.save({ new: true });
   };
-  userSchema.methods.updateVendor = function() {};
+  userSchema.methods.updateVendor = async function(name, location, picture) {
+    if (name) this.vendorProfile.name = name;
+    if (location) this.vendorProfile.location = location;
+    if (picture) this.vendorProfile.picture = picture;
+    return await this.save({ new: true });
+  };
 };

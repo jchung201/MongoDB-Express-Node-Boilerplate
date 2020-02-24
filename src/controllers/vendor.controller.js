@@ -35,7 +35,8 @@ router.patch(
   auth,
   asyncHandler(async (req, res, next) => {
     const { name, location, picture } = req.body;
-    res.send({ user: "New" });
+    const updatedUser = req.user.updateVendor(name, location, picture);
+    res.send({ user: updatedUser });
   })
 );
 
