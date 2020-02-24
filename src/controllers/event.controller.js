@@ -79,7 +79,7 @@ router.patch(
     if (!foundEvent.vendor.equals(req.user._id))
       throw httpErrors(401, "This is not your Event!");
     const updatedEvent = await foundEvent.updateEvent(
-      cateogry,
+      category,
       description,
       start,
       end,
