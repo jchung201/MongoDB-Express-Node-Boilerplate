@@ -6,7 +6,7 @@ module.exports = function(eventSchema) {
     if (this.owner.equals(id)) return true;
     return false;
   };
-  eventSchema.methods.updateEvent = await function(
+  eventSchema.methods.updateEvent = async function(
     category,
     description,
     start,
