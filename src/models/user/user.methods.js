@@ -30,4 +30,32 @@ module.exports = function(userSchema) {
       "JWT " + jwt.sign(jwtScheme, process.env.SECRET, { expiresIn: "12h" })
     );
   };
+  userSchema.methods.updateDater = async function(
+    name,
+    birthDate,
+    location,
+    description
+  ) {
+    if (name) this.datingProfile.name = name;
+    if (birthDate) this.datingProfile.birthDate = birthDate;
+    if (location) this.datingProfile.location = location;
+    if (description) this.datingProfile.description = description;
+    if (photos) this.datingProfile.photos = photos;
+    return await this.save();
+  };
+  userSchema.methods.updateFilter = async function(
+    distance,
+    ageLow,
+    ageHigh,
+    heightLow,
+    heightHigh
+  ) {
+    if (distance) this.datingProfile.filters.distance = distance;
+    if (ageLow) this.datingProfile.filters.ageLow = ageLow;
+    if (ageHigh) this.datingProfile.filters.ageHigh = ageHigh;
+    if (heightLow) this.datingProfile.filters.heightLow = heightLow;
+    if (heightHigh) this.datingProfile.filters.heightHigh = heightHigh;
+    return await this.save({ new: true });
+  };
+  userSchema.methods.updateVendor = function() {};
 };

@@ -80,7 +80,14 @@ router
     auth,
     asyncHandler(async (req, res, next) => {
       const { distance, ageLow, ageHigh, heightLow, heightHigh } = req.body;
-      res.send({ user: "New" });
+      const updatedUser = await req.user.updateFilter(
+        distance,
+        ageLow,
+        ageHigh,
+        heightLow,
+        heightHigh
+      );
+      res.send({ user: updatedUser });
     })
   )
   // Edit profile information
@@ -89,7 +96,13 @@ router
     auth,
     asyncHandler(async (req, res, next) => {
       const { name, birthDate, location, description } = req.body;
-      res.send({ user: "New" });
+      const updatedUser = await req.user.updateDater(
+        name,
+        birthDate,
+        location,
+        description
+      );
+      res.send({ user: updatedUser });
     })
   );
 
