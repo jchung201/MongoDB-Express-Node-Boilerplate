@@ -7,7 +7,7 @@ import auth from "../middlewares/auth";
 
 const RSVP = mongoose.model("RSVP");
 
-// Make event with your ID stuff
+// Make rsvp with event information
 router.post(
   "/",
   auth,
@@ -25,24 +25,15 @@ router.post(
   })
 );
 
-// Get personal user profile
-router
-  .get(
-    "/",
-    auth,
-    asyncHandler(async (req, res, next) => {
-      // TODO: Filter rsvps
-      res.send({ rsvps: await RSVP.find({ user: req.user._id }) });
-    })
-  )
-  .get(
-    "/:id",
-    auth,
-    asyncHandler(async (req, res, next) => {
-      const { id } = req.params;
-      res.send({ rsvp: await RSVP.findById(id) });
-    })
-  );
+// Get specific rsvp
+router.get(
+  "/:id",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    res.send({ rsvp: await RSVP.findById(id) });
+  })
+);
 
 // Edit RSVP
 router.patch(

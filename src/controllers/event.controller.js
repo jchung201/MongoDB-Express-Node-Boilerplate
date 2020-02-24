@@ -7,7 +7,7 @@ import auth from "../middlewares/auth";
 
 const EVENT = mongoose.model("EVENT");
 
-// Make event with your ID stuff
+// Make event with information
 router.post(
   "/",
   auth,
@@ -40,7 +40,7 @@ router.post(
   })
 );
 
-// Get personal user profile
+// Get events/specific event
 router
   .get(
     "/",
@@ -59,7 +59,7 @@ router
     })
   );
 
-// Edit EVENT
+// Edit Event
 router.patch(
   "/:id",
   auth,
