@@ -78,20 +78,14 @@ router.patch(
     if (!foundEvent) throw httpErrors(401, "Event not found!");
     if (!foundEvent.vendor.equals(req.user._id))
       throw httpErrors(401, "This is not your Event!");
-    const updatedEvent = await EVENT.findByIdAndUpdate(
-      id,
-      {
-        category: category || foundEvent.category,
-        description: description || foundEvent.description,
-        date: {
-          start: start || foundEvent.date.start,
-          end: end || foundEvent.date.end
-        },
-        location: location || foundEvent.location,
-        title: title || foundEvent.title,
-        picture: picture || foundEvent.picture
-      },
-      { new: true }
+    const updatedEvent = await foundEvent.updateEvent(
+      cateogry,
+      description,
+      start,
+      end,
+      location,
+      title,
+      picture
     );
     res.send({
       event: updatedEvent
