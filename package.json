@@ -7,7 +7,7 @@
     "dev": "nodemon --exec babel-node src/server.js",
     "build": "babel src -d dist",
     "start": "npm run build && node dist/server.js",
-    "seed": "babel-node src/utilities/seeder.js"
+    "seeder": "babel-node src/utilities/seeder.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.8.4",
