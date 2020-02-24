@@ -40,13 +40,37 @@ router.post(
   })
 );
 
-// Find user profile
+// Find specific
 router.get(
   "/:id",
   auth,
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
     res.send({ match: await MATCH.findById(id) });
+  })
+);
+
+// Edit match
+router.patch(
+  "/:id",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    if (status !== "passed")
+      throw httpErrors(401, "Cannot update to anything other than cancelled!");
+    const foundMatch = await MATCH.findById(id);
+    if (!foundMatch) throw httpErrors(401, "Match not found!");
+    if (!foundMatch.users.includes(req.user._id))
+      throw httpErrors(401, "This is not your Match!");
+    const updatedMatch = await MATCH.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    res.send({
+      match: updatedMatch
+    });
   })
 );
 
