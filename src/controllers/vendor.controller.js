@@ -29,4 +29,14 @@ router
     })
   );
 
+// Edit profile information
+router.patch(
+  "/profile",
+  auth,
+  asyncHandler(async (req, res, next) => {
+    const { name, location, picture } = req.body;
+    res.send({ user: "New" });
+  })
+);
+
 export default router;
