@@ -9,7 +9,7 @@ const rsvpSchema = new Schema(
     event: { type: ObjectId, ref: "EVENT" },
     status: {
       type: String,
-      enum: ["going", "passed"],
+      enum: ["going", "interested", "passed"],
       default: "going"
     }
   },
