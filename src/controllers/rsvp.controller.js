@@ -13,6 +13,8 @@ router.post(
   auth,
   asyncHandler(async (req, res, next) => {
     const { event, status } = req.body;
+    const duplicateRSVP = await RSVP.findOne({ user: req.user._id, event });
+    if (duplicateRSVP) throw httpErrors(401, "RSVP already exists!");
     const newRSVP = new RSVP({
       user: req.user._id,
       event,
@@ -22,16 +24,6 @@ router.post(
     res.send({
       rsvp: savedRSVP
     });
-  })
-);
-
-// Get specific rsvp
-router.get(
-  "/:id",
-  auth,
-  asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
-    res.send({ rsvp: await RSVP.findById(id) });
   })
 );
 
