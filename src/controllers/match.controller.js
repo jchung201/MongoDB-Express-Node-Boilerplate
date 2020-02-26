@@ -10,6 +10,7 @@ const MATCH = mongoose.model("MATCH");
 // Create or Update Match
 router.post(
   "/",
+  auth,
   asyncHandler(async (req, res, next) => {
     const { user, status } = req.body;
     if (!user || !status) {
@@ -19,7 +20,13 @@ router.post(
       users: { $all: [req.user._id, user] }
     });
     if (existingMatch && existingMatch.status !== "passed") {
-      const updatedMatch = await MATCH.findByIdAndUpdate({ status });
+      const updatedMatch = await MATCH.findByIdAndUpdate(
+        existingMatch._id,
+        {
+          status
+        },
+        { new: true }
+      );
       res.send({
         matched: status === "matched" ? true : false,
         match: updatedMatch
