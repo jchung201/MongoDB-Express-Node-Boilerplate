@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import auth from "../middlewares/auth";
 const USER = mongoose.model("USER");
 const MATCH = mongoose.model("MATCH");
+const RSVP = mongoose.model("RSVP");
 
 // Get personal user profile
 router
@@ -27,7 +28,7 @@ router
       const users = await USER.find({ _id: { $ne: req.user._id } });
       // Return prospects that are not a match yet
       // This ensures that there are no duplicates
-      // TODO: Include filtered information based on location and stuff
+      // TODO: Include filtered information based on location and filters that are on the user object
       res.send({
         prospects: users.filter(user => {
           for (let i = 0; i < matches.length; i++) {
@@ -47,7 +48,10 @@ router
     asyncHandler(async (req, res, next) => {
       // Return only matched 'MATCH's
       res.send({
-        matches: await MATCH.find({ users: req.user._id, status: "matched" })
+        matches: await MATCH.find({
+          users: req.user._id,
+          status: "matched"
+        }).populate("users")
       });
     })
   )
@@ -57,8 +61,9 @@ router
     auth,
     asyncHandler(async (req, res, next) => {
       // Return only going rsvps
+      // TODO: Filter based on location/etc
       res.send({
-        rsvps: await RSVP.find({ user: req.user._id, status: "going" })
+        rsvps: await RSVP.find({ user: req.user._id })
       });
     })
   )
@@ -95,12 +100,38 @@ router
     "/profile",
     auth,
     asyncHandler(async (req, res, next) => {
-      const { name, birthDate, location, description } = req.body;
-      const updatedUser = await req.user.updateDater(
-        name,
-        birthDate,
-        location,
-        description
+      const { name, birthDate, location } = req.body;
+      const updatedUser = await req.user.updateDater(name, birthDate, location);
+      res.send({ user: updatedUser });
+    })
+  )
+  .patch(
+    "/icons",
+    auth,
+    asyncHandler(async (req, res, next) => {
+      const {
+        horoscope,
+        life,
+        love,
+        meetMe,
+        preference,
+        schedule,
+        search,
+        sexuality,
+        status,
+        tell
+      } = req.body;
+      const updatedUser = await req.user.updateIcons(
+        horoscope,
+        life,
+        love,
+        meetMe,
+        preference,
+        schedule,
+        search,
+        sexuality,
+        status,
+        tell
       );
       res.send({ user: updatedUser });
     })
