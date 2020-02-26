@@ -46,7 +46,8 @@ router
     "/",
     auth,
     asyncHandler(async (req, res, next) => {
-      // TODO: Filter events (Also events that already have rsvp)
+      // TODO: Filter events based on location/time/etc
+      // Nasty logic to not return events that have already been rsvped/passed on
       res.send({ events: await EVENT.find({}) });
     })
   )
