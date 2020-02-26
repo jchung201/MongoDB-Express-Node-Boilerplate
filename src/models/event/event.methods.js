@@ -15,7 +15,7 @@ module.exports = function(eventSchema) {
     title,
     picture
   ) {
-    if (category) this.category = distance;
+    if (category) this.category = category;
     if (description) this.description = description;
     if (start) this.date.start = start;
     if (end) this.date.end = end;
