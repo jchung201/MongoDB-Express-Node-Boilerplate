@@ -25,7 +25,7 @@ mongoose.connection.on("connected", async () => {
   // Create Vendor1
   const newVendor1 = new USER({
     auth: {
-      email: "juh@letzb.com",
+      email: "vendor1@letzb.com",
       password: "let123"
     },
     vendorProfile: {
@@ -143,4 +143,5 @@ mongoose.connection.on("connected", async () => {
   });
   const savedRSVP = await newRSVP.save();
   console.log("finished");
+  process.exit();
 });
