@@ -11,7 +11,7 @@ module.exports = function(userSchema) {
       bcrypt.hash(password, salt, function(error, hash) {
         if (error) throw httpErrors(500, "Error encrypting password");
         user.auth.password = hash;
-        user.save();
+        next();
       });
     });
   };
@@ -30,17 +30,34 @@ module.exports = function(userSchema) {
       "JWT " + jwt.sign(jwtScheme, process.env.SECRET, { expiresIn: "12h" })
     );
   };
-  userSchema.methods.updateDater = async function(
-    name,
-    birthDate,
-    location,
-    description
-  ) {
+  userSchema.methods.updateDater = async function(name, birthDate, location) {
     if (name) this.datingProfile.name = name;
     if (birthDate) this.datingProfile.birthDate = birthDate;
     if (location) this.datingProfile.location = location;
-    if (description) this.datingProfile.description = description;
-    if (photos) this.datingProfile.photos = photos;
+    return await this.save({ new: true });
+  };
+  userSchema.methods.updateIcons = async function(
+    horoscope,
+    life,
+    love,
+    meetMe,
+    preference,
+    schedule,
+    search,
+    sexuality,
+    status,
+    tell
+  ) {
+    if (horoscope) this.datingProfile.icons.horoscope = horoscope;
+    if (life) this.datingProfile.icons.life = life;
+    if (love) this.datingProfile.icons.love = love;
+    if (meetMe) this.datingProfile.icons.meetMe = meetMe;
+    if (preference) this.datingProfile.icons.preference = preference;
+    if (schedule) this.datingProfile.icons.schedule = schedule;
+    if (search) this.datingProfile.icons.search = search;
+    if (sexuality) this.datingProfile.icons.sexuality = sexuality;
+    if (status) this.datingProfile.icons.status = status;
+    if (tell) this.datingProfile.icons.tell = tell;
     return await this.save({ new: true });
   };
   userSchema.methods.updateFilter = async function(
