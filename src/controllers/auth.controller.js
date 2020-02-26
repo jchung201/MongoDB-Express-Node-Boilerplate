@@ -14,10 +14,11 @@ router
       if (!email || !password) {
         throw httpErrors(402, "Forgot email or password!");
       }
+      const duplicateUSER = await USER.findOne({ email: email.toLowerCase() });
+      if (duplicateUSER) throw httpErrors(401, "Email Taken!");
       const newUser = new USER({
-        auth: { email: email.toLowerCase() }
+        auth: { email: email.toLowerCase(), password }
       });
-      newUser.encryptPassword(password);
       const savedUser = await newUser.save();
       res.send({
         token: savedUser.getJWT(),
