@@ -14,7 +14,8 @@ router
     "/events",
     auth,
     asyncHandler(async (req, res, next) => {
-      const foundEvents = EVENT.find({ vendor: req.user._id });
+      // TODO: Filters on location/date/etc
+      const foundEvents = await EVENT.find({ vendor: req.user._id });
       res.send({ events: foundEvents });
     })
   )
@@ -35,7 +36,7 @@ router.patch(
   auth,
   asyncHandler(async (req, res, next) => {
     const { name, location, picture } = req.body;
-    const updatedUser = req.user.updateVendor(name, location, picture);
+    const updatedUser = await req.user.updateVendor(name, location, picture);
     res.send({ user: updatedUser });
   })
 );
